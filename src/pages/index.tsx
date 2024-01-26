@@ -1,10 +1,32 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <h1>Hello world</h1>
+    <div>
+      <h1>Map Index Page</h1>
+      <ul>
+        <li>
+          <Link href="/stores">맛집 목록</Link>
+        </li>
+        <li>
+          <Link href="/stores/new">맛집 생성</Link>
+        </li>
+        <li>
+          <Link href="/stores/1">맛집 상세 페이지</Link>
+        </li>
+        <li>
+          <Link href="/stores/1/edit">맛집 수정 페이지</Link>
+        </li>
+        <li>
+          <Link href="/users/login">로그인페이지</Link>
+        </li>
+        <li>
+          <Link href="/users/mypage">마이 페이지</Link>
+        </li>
+        <li>
+          <Link href="/users/mypage">찜한 맛집 리스트</Link>
+        </li>
+      </ul>
+    </div>
   );
 }
