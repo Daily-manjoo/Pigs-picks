@@ -8,7 +8,7 @@ export default function NavBar(){
     return(
         <>
             <div className="navbar">
-                <div className="navbar__logo">pig's picks</div>
+                <div className="navbar__logo">pig is picks</div>
                 <div className="navbar__list">
                     <Link href="/stores" className="navbar__list--item">
                         맛집 목록
