@@ -45,9 +45,32 @@ export default function Map(){
 
           //마커가 지도 위에 표시되도록 설정하기
           marker.setMap(map);
-        })
-    })
-    }
+
+          //마커 커서가 오버되었을 때 마커 위에 표시할 인포윈도우 생성
+          var content = `<div class="infowindow">${store?.upso_nm}</div>`; //인포윈도에 표시될 내용
+
+          // 커스텀 오버레이를 생성
+          var customOverlay = new window.kakao.maps.CustomOverlay({
+            position: markerPosition,
+            content: content,
+            xAnchor: 0.6,
+            yAnchor: 1, 
+          });
+
+           // 마커에 마우스오버 이벤트를 등록
+           window.kakao.maps.event.addListener(marker, 'mouseover', function() {
+            // 마커에 마우스오버 이벤트가 발생하면 커스텀 오버레이를 마커위에 표시합니다
+              customOverlay.setMap(map);
+          });
+
+          // 마커에 마우스아웃 이벤트를 등록
+          window.kakao.maps.event.addListener(marker, 'mouseout', function() {
+              // 마커에 마우스아웃 이벤트가 발생하면 커스텀 오버레이를 제거
+              customOverlay.setMap(null);
+          });
+        });
+      });
+    };
     return(
         <>
             <Script strategy="afterInteractive" type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_CLIENT}&autoload=false`} onReady={loadKakaoMap} />
