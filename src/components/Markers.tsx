@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, Dispatch, SetStateAction, useCallback} from "react";
 
 export interface MarkerProps {
     map: any;
     storeDatas: any[];
+    setCurrentStore: Dispatch<SetStateAction<any>>;
 }
 
-export default function Markers({map, storeDatas}: MarkerProps) {
-    const loadKakaoMarkers = () => {
+export default function Markers({map, storeDatas, setCurrentStore}: MarkerProps) {
+    const loadKakaoMarkers = useCallback(() => {
         if(map){
             //식당 데이터 마커 띄우기
         storeDatas?.map((store) => {
@@ -54,13 +55,18 @@ export default function Markers({map, storeDatas}: MarkerProps) {
                 // 마커에 마우스아웃 이벤트가 발생하면 커스텀 오버레이를 제거
                 customOverlay.setMap(null);
             });
+
+            //선택한 가게 저장
+            window.kakao.maps.event.addListener(marker, 'click', function(){
+              setCurrentStore(store);
+            });
           });
         }
-    }
+    }, [map, setCurrentStore, storeDatas]);
 
     useEffect(() => {
         loadKakaoMarkers();
-    }, [map])
+    }, [loadKakaoMarkers, map])
 
     return <></>
 }
