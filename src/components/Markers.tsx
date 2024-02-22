@@ -2,15 +2,15 @@ import { useEffect, Dispatch, SetStateAction, useCallback} from "react";
 
 export interface MarkerProps {
     map: any;
-    storeDatas: any[];
+    stores: any[];
     setCurrentStore: Dispatch<SetStateAction<any>>;
 }
 
-export default function Markers({map, storeDatas, setCurrentStore}: MarkerProps) {
+export default function Markers({map, stores, setCurrentStore}: MarkerProps) {
     const loadKakaoMarkers = useCallback(() => {
         if(map){
             //식당 데이터 마커 띄우기
-        storeDatas?.map((store) => {
+        stores?.map((store) => {
             var imageSrc = store?.bizcnd_code_nm ? `/images/markers/${store?.bizcnd_code_nm}.png` : "/images/markers/default.png", // 마커이미지의 주소입니다    
                 imageSize = new window.kakao.maps.Size(40, 40), // 마커이미지의 크기입니다
                 imageOption = {offset: new window.kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
@@ -62,7 +62,7 @@ export default function Markers({map, storeDatas, setCurrentStore}: MarkerProps)
             });
           });
         }
-    }, [map, setCurrentStore, storeDatas]);
+    }, [map, setCurrentStore, stores]);
 
     useEffect(() => {
         loadKakaoMarkers();
