@@ -1,11 +1,10 @@
-import React, {useRef, useEffect} from "react";
+import React, {useRef, useEffect, useCallback} from "react";
 import Image from "next/image";
-import { StoreApiResponse, StoreType} from "@/interface";
+import { StoreType} from "@/interface";
 import axios from "axios";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/router";
-import Paginiation from "@/components/Pagination";
-import { useQuery, useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
 
@@ -32,18 +31,29 @@ export default function StoreListPage(){
         getNextPageParam: (lastPage: any) => lastPage.data?.length > 0 ? lastPage.page + 1 : undefined
     })
 
-    useEffect(() => {
-        if(isPageEnd){
-            fetchNextPage();
+    // 0.5초 뒤 무한스크롤 기능
+    const fetchNext = useCallback(async () => {
+        const res = await fetchNextPage();
+        if(res.isError){
+            console.log(res.error);
         }
-    }, [fetchNextPage, isPageEnd])
+    }, [fetchNextPage])
+
+    useEffect(() => {
+        let timerId: NodeJS.Timeout | undefined;
+        if(isPageEnd && hasNextPage){
+            timerId = setTimeout(() => {
+                fetchNext()
+            }, 500); //0.5초 뒤 타이머
+        }
+
+        return () => clearTimeout(timerId);
+    }, [fetchNext, hasNextPage, isPageEnd])
 
     if(isError){
         return <div className="w-full h-screen mx-auto pt-[10%] text-red-500 text-center font-semibold">다시 시도해주세요.</div>
     }
 
-
-    
     return(
         <div className="px-4 md:max-w-4xl mx-auto py-8">
             <ul role="list" className="divide-y divide-gray-100">
@@ -80,7 +90,7 @@ export default function StoreListPage(){
                     </React.Fragment>
                 ))}
             </ul>
-            {isFetching && hasNextPage && <Loader />}
+            {(isFetching || hasNextPage || isFetchingNextPage) && <Loader />}
             <div className="w-full touch-none h-10 mb-10" ref={ref} />
         </div>
     );
