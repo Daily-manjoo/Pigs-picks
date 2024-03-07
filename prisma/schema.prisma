@@ -13,7 +13,7 @@ datasource db {
 model User {
   id            Int       @id @default(autoincrement()) //자동으로 1씩 늘어나게
   email         String    @unique //중복되지 않도록
-  name          String
+  name          String? //네이버 로그인 api는 name이 없음
   emailVerified DateTime?
   image         String?
   accounts      Account[]
