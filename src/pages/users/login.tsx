@@ -30,15 +30,15 @@ export default function LoginPage(){
             </div>
             <div className="mt-10 mx-auto w-full max-w-sm">
                 <div className="flex flex-col gap-4">
-                    <button type="button" onClick={() => signIn("google")} className="text-white flex gap-2  bg-[#4285f4] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center">
+                    <button type="button" onClick={() => signIn("google", {callbackUrl: "/"})} className="text-white flex gap-2  bg-[#4285f4] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center">
                         <AiOutlineGoogle className="w-6 h-6" />
                         Sign in with Google
                     </button>
-                    <button type="button" onClick={() => signIn("naver")} className="text-white flex gap-4  bg-[#2db400] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center">
+                    <button type="button" onClick={() => signIn("naver", {callbackUrl: "/"})} className="text-white flex gap-4  bg-[#2db400] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center">
                         <SiNaver className="w-4 h-4" />
                         Sign in with Naver
                     </button>
-                    <button type="button" onClick={() => signIn("")} className="text-black flex gap-2  bg-[#fef01b] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center">
+                    <button type="button" onClick={() => signIn("kakao", {callbackUrl: "/"})} className="text-black flex gap-2  bg-[#fef01b] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center">
                         <RiKakaoTalkFill className="w-6 h-6" />
                         Sign in with KaKao
                     </button>

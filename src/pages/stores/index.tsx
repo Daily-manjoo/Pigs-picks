@@ -8,10 +8,9 @@ import { useInfiniteQuery } from "react-query";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
 
-
 export default function StoreListPage(){
     const router = useRouter();
-    const {page = "1"} : any = router.query;
+    const {page = "1"}: any = router.query;
     const ref = useRef<HTMLDivElement | null>(null);
     const pageRef = useIntersectionObserver(ref, {});
     const isPageEnd = !!pageRef?.isIntersecting;
@@ -23,11 +22,11 @@ export default function StoreListPage(){
                 page: pageParam,
             }
         });
-
+        console.log("Received data:", data);
         return data;
     }
 
-    const {data: stores, isFetching, fetchNextPage, isFetchingNextPage, hasNextPage, isError, isLoading} = useInfiniteQuery('stores', fetchStores, {
+    const {data: stores, isFetching, fetchNextPage, isFetchingNextPage, hasNextPage, isError, isLoading} = useInfiniteQuery("stores", fetchStores, {
         getNextPageParam: (lastPage: any) => lastPage.data?.length > 0 ? lastPage.page + 1 : undefined
     })
 
@@ -59,7 +58,7 @@ export default function StoreListPage(){
             <ul role="list" className="divide-y divide-gray-100">
                 {isLoading ? <Loading /> : stores?.pages?.map((page, index) => (
                     <React.Fragment key={index}>
-                        {page.data.map((store: StoreType, i)=> ( //page라는 배열 안에 store 배열이 더 있으므로 두번 매핑
+                        {page.data.map((store: StoreType, i:number)=> ( //page라는 배열 안에 store 배열이 더 있으므로 두번 매핑
                             <li className="flex justify-between gap-x-6 py-5" key={i}>
                             <div className="flex gap-x-4">
                                 <Image src={store?.category ? `/images/markers/${store?.category}.png` 
