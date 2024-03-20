@@ -5,6 +5,7 @@ import axios from "axios";
 import { StoreType } from "@/interface";
 import Loader from "@/components/Loader";
 import Map from "@/components/Map";
+import Marker from "@/components/Marker";
 
 export default function StorePage(){
     const [map, setMap] = useState(null);
@@ -17,6 +18,7 @@ export default function StorePage(){
 
     const {data:store, isFetching, isSuccess, isError} = useQuery(`store-${id}`, fetchStore, {
         enabled: !!id, //useQuery는 id값이 있는 경우에만 사용해야하기 때문
+        refetchOnWindowFocus: false,
     })
 
     if(isError){
@@ -74,6 +76,7 @@ export default function StorePage(){
             {isSuccess && (
                 <div className="overflow-hidden max-w-5xl w-full mb-20 mx-auto max-h-[600px]">
                     <Map setMap={setMap} lat={store?.lat} lng={store?.lng} zoom={1} />
+                    <Marker map={map} store={store} />
                 </div>
                 
             )}
