@@ -1,21 +1,32 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import {StoreApiResponse, StoreType} from "../../interface"
+import { StoreApiResponse, StoreType } from "../../interface";
 import { PrismaClient } from "@prisma/client";
+
+interface ResponseType {
+  page?: string;
+  limit?: string;
+  q?: string;
+  district?: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>,
+  res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>
 ) {
-  const {page = ""}: {page? : string} = req.query;
+  const { page = "", limit = "", q, district }: ResponseType = req.query;
   const prisma = new PrismaClient();
 
-  if(page){
+  if (page) {
     const skipPage = parseInt(page) - 1; //인덱스는 0부터, 페이지는 1부터 시작하니까 -1을 해준다
     const count = await prisma.store.count(); //총 레코드 개수 넘겨주기
     const stores = await prisma.store.findMany({
-      orderBy: {id: "asc"},
-      take: 10, //페이지 당 목록 10개만 가져오기
+      orderBy: { id: "asc" },
+      where: {
+        name: q ? { contains: q } : {},
+        address: district ? { contains: district } : {},
+      },
+      take: parseInt(limit), //페이지 당 목록 10개만 가져오기
       skip: skipPage * 10, //다음으로 건너뛸 데이터 수
     });
 
@@ -26,18 +37,16 @@ export default async function handler(
       data: stores,
       totalCount: count,
       totalPage: Math.ceil(count / 10),
-    })
+    });
   } else {
-    const {id}: {id?:string} = req.query;
+    const { id }: { id?: string } = req.query;
     const stores = await prisma.store.findMany({
-      orderBy: {id:'asc'},
+      orderBy: { id: "asc" },
       where: {
         id: id ? parseInt(id) : {}, //id가 있다면 가져오고 없으면 무시
-      }
-    })
+      },
+    });
 
     return res.status(200).json(id ? stores[0] : stores);
   }
-  
-  
 }
