@@ -40,7 +40,7 @@ export default function Markers({ stores }: MarkerProps) {
         });
 
         //마커가 지도 위에 표시되도록 설정하기
-        marker.set(map);
+        marker.setMap(map);
 
         //마커 커서가 오버되었을 때 마커 위에 표시할 인포윈도우 생성
         var content = `<div class="infowindow">${store?.name}</div>`; //인포윈도에 표시될 내용
