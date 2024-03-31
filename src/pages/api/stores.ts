@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StoreApiResponse, StoreType } from "../../interface";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/db";
 
 interface ResponseType {
   page?: string;
@@ -15,7 +15,6 @@ export default async function handler(
   res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>
 ) {
   const { page = "", limit = "", q, district }: ResponseType = req.query;
-  const prisma = new PrismaClient();
 
   if (page) {
     const skipPage = parseInt(page) - 1; //인덱스는 0부터, 페이지는 1부터 시작하니까 -1을 해준다
