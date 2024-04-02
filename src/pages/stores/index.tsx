@@ -8,18 +8,19 @@ import { useInfiniteQuery } from "react-query";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
 import SearchFilter from "@/components/SearchFilter";
+import { searchState } from "@/atom";
+import { useRecoilValue } from "recoil";
 
 export default function StoreListPage() {
   const router = useRouter();
   const ref = useRef<HTMLDivElement | null>(null);
   const pageRef = useIntersectionObserver(ref, {});
+  const searchValue = useRecoilValue(searchState);
   const isPageEnd = !!pageRef?.isIntersecting;
-  const [q, setQ] = useState<string | null>(null); //지역 검색
-  const [district, setDistrict] = useState<string | null>(null);
 
   const searchParams = {
-    q: q,
-    district: district,
+    q: searchValue?.q,
+    district: searchValue?.district,
   };
 
   const fetchStores = async ({ pageParam = 1 }) => {
@@ -76,7 +77,7 @@ export default function StoreListPage() {
   return (
     <div className="px-4 md:max-w-4xl mx-auto py-8">
       {/* search filter */}
-      <SearchFilter setQ={setQ} setDistrict={setDistrict} />
+      <SearchFilter />
       <ul role="list" className="divide-y divide-gray-100">
         {isLoading ? (
           <Loading />
