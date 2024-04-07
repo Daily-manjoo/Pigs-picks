@@ -1,3 +1,4 @@
+import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from "@/data/store";
 import { useForm } from "react-hook-form";
 
 export default function StoreNewPage() {
@@ -7,7 +8,12 @@ export default function StoreNewPage() {
     formState: { errors },
   } = useForm();
   return (
-    <form className="px-4 md:max-w-4xl mx-auto py-6">
+    <form
+      className="px-4 md:max-w-4xl mx-auto py-6"
+      onSubmit={handleSubmit(async (data) => {
+        console.log(data);
+      })}
+    >
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -20,7 +26,7 @@ export default function StoreNewPage() {
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">
               <label
-                htmlFor="first-name"
+                htmlFor="name"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 가게명
@@ -28,101 +34,135 @@ export default function StoreNewPage() {
               <div className="mt-2">
                 <input
                   type="text"
-                  name="name"
-                  id="name"
-                  autoComplete="가게명 입력"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("name", { required: true })}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm outline-none px-2 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {errors?.name?.type === "required" && (
+                  <div className="pt-2 text-xs text-red-600">
+                    필수 입력입니다.
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="sm:col-span-3">
               <label
-                htmlFor="last-name"
+                htmlFor="category"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 카테고리
               </label>
               <div className="mt-2">
-                <input
-                  type="text"
-                  name="last-name"
-                  id="last-name"
-                  autoComplete="family-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                <select
+                  {...register("category", { required: true })}
+                  className="block w-full rounded-md border-0 px-2 outline-none py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                >
+                  <option value="">카테고리 선택</option>
+                  {CATEGORY_ARR?.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                {errors?.category?.type === "required" && (
+                  <div className="pt-2 text-xs text-red-600">
+                    필수 입력입니다.
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="sm:col-span-4">
               <label
-                htmlFor="email"
+                htmlFor="phone"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 연락처
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...(register("phone"), { required: true })}
+                  className="block w-full rounded-md outline-none border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {errors?.phone?.type === "required" && (
+                  <div className="pt-2 text-xs text-red-600">
+                    필수 입력입니다.
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="col-span-full">
               <label
-                htmlFor="street-address"
+                htmlFor="address"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 주소(다음 주소 검색 API)
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
-                  name="street-address"
-                  id="street-address"
-                  autoComplete="street-address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("address", { required: true })}
+                  className="block w-full rounded-md px-2 outline-none border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                {errors?.address?.type === "required" && (
+                  <div className="pt-2 text-xs text-red-600">
+                    필수 입력입니다.
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="sm:col-span-2 sm:col-start-1">
               <label
-                htmlFor="city"
+                htmlFor="foodCertifyName"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 식품인증구분
               </label>
               <div className="mt-2">
-                <input
-                  type="text"
-                  name="city"
-                  id="city"
-                  autoComplete="address-level2"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                <select
+                  {...register("foodCertifyName", { required: true })}
+                  className="block w-full px-2 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                >
+                  <option value="">식품인증구분 선택</option>
+                  {FOOD_CERTIFY_ARR?.map((data) => (
+                    <option key={data} value={data}>
+                      {data}
+                    </option>
+                  ))}
+                </select>
+                {errors?.foodCertifyName?.type === "required" && (
+                  <div className="pt-2 text-xs text-red-600">
+                    필수 입력입니다.
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="sm:col-span-2">
               <label
-                htmlFor="region"
+                htmlFor="storeType"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 업종구분
               </label>
               <div className="mt-2">
-                <input
-                  type="text"
-                  name="region"
-                  id="region"
-                  autoComplete="address-level1"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                <select
+                  {...register("storeType", { required: true })}
+                  className="block w-full px-2 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                >
+                  <option value="">식품인증구분 선택</option>
+                  {STORE_TYPE_ARR?.map((data) => (
+                    <option key={data} value={data}>
+                      {data}
+                    </option>
+                  ))}
+                </select>
+                {errors?.storeType?.type === "required" && (
+                  <div className="pt-2 text-xs text-red-600">
+                    필수 입력입니다.
+                  </div>
+                )}
               </div>
             </div>
           </div>
