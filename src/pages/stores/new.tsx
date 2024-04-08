@@ -1,7 +1,11 @@
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from "@/data/store";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function StoreNewPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -12,6 +16,21 @@ export default function StoreNewPage() {
       className="px-4 md:max-w-4xl mx-auto py-6"
       onSubmit={handleSubmit(async (data) => {
         console.log(data);
+        try {
+          const result = await axios.post("/api/stores", data);
+          console.log(result);
+
+          if (result.status === 200) {
+            //성공시
+            toast.success("맛집을 등록했습니다.");
+            router.replace(`/stores/${result?.data?.id}`);
+          } else {
+            toast.error("다시 시도해주세요.");
+          }
+        } catch (e) {
+          console.log(e);
+          toast.error("데이터 생성 중 문제가 발생했습니다. 다시 시도해주세요.");
+        }
       })}
     >
       <div className="space-y-12">
