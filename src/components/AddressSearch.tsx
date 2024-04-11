@@ -31,6 +31,7 @@ export default function AddressSearch({
     }
 
     setValue("address", fullAddress); //address 필드에 해당 값 등록
+    setIsOpen(false);
   };
 
   return (

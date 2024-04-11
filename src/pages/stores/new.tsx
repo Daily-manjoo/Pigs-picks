@@ -20,7 +20,6 @@ export default function StoreNewPage() {
       onSubmit={handleSubmit(async (data) => {
         try {
           const result = await axios.post("/api/stores", data);
-
           if (result.status === 200) {
             //성공시
             toast.success("맛집을 등록했습니다.");
@@ -156,7 +155,7 @@ export default function StoreNewPage() {
                   {...register("storeType", { required: true })}
                   className="block w-full px-2 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 >
-                  <option value="">식품인증구분 선택</option>
+                  <option value="">업종 구분</option>
                   {STORE_TYPE_ARR?.map((data) => (
                     <option key={data} value={data}>
                       {data}
@@ -180,6 +179,7 @@ export default function StoreNewPage() {
         <button
           type="button"
           className="text-sm font-semibold leading-6 text-gray-900"
+          onClick={() => router.back()}
         >
           뒤로가기
         </button>

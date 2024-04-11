@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StoreApiResponse, StoreType } from "../../interface";
 import prisma from "@/db";
+import axios from "axios";
 
 interface ResponseType {
   page?: string;
@@ -12,14 +13,25 @@ interface ResponseType {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>
+  res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType | null>
 ) {
   const { page = "", limit = "", q, district }: ResponseType = req.query;
   if (req.method === "POST") {
     //데이터 생성 처리
-    const data = req.body;
+    const formData = req.body;
+    const headers = {
+      Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
+    };
+
+    const { data } = await axios.get(
+      `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURI(
+        formData.address
+      )}`,
+      { headers }
+    );
+
     const result = await prisma.store.create({
-      data: { ...data },
+      data: { ...formData, lat: data.documents[0].y, lng: data.documents[0].x },
     });
 
     return res.status(200).json(result);
