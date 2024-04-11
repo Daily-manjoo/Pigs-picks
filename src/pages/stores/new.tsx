@@ -1,4 +1,6 @@
+import AddressSearch from "@/components/AddressSearch";
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from "@/data/store";
+import { StoreType } from "@/interface";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -10,15 +12,14 @@ export default function StoreNewPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    setValue,
+  } = useForm<StoreType>();
   return (
     <form
       className="px-4 md:max-w-4xl mx-auto py-6"
       onSubmit={handleSubmit(async (data) => {
-        console.log(data);
         try {
           const result = await axios.post("/api/stores", data);
-          console.log(result);
 
           if (result.status === 200) {
             //성공시
@@ -28,7 +29,6 @@ export default function StoreNewPage() {
             toast.error("다시 시도해주세요.");
           }
         } catch (e) {
-          console.log(e);
           toast.error("데이터 생성 중 문제가 발생했습니다. 다시 시도해주세요.");
         }
       })}
@@ -111,25 +111,11 @@ export default function StoreNewPage() {
               </div>
             </div>
 
-            <div className="col-span-full">
-              <label
-                htmlFor="address"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                주소(다음 주소 검색 API)
-              </label>
-              <div className="mt-2">
-                <input
-                  {...register("address", { required: true })}
-                  className="block w-full rounded-md px-2 outline-none border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-                {errors?.address?.type === "required" && (
-                  <div className="pt-2 text-xs text-red-600">
-                    필수 입력입니다.
-                  </div>
-                )}
-              </div>
-            </div>
+            <AddressSearch
+              setValue={setValue}
+              register={register}
+              errors={errors}
+            />
 
             <div className="sm:col-span-2 sm:col-start-1">
               <label
