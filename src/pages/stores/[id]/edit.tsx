@@ -33,17 +33,16 @@ export default function StoreEditPage() {
     //가게 수정시 기존 입력값 보여주기
     onSuccess: (data) => {
       console.log(data);
+      setValue("id", data.id);
       setValue("name", data.name);
-      setValue("phone", data.phone, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
+      setValue("phone", data.phone);
       setValue("lat", data.lat);
       setValue("address", data.address);
       setValue("foodCertifyName", data.foodCertifyName);
       setValue("storeType", data.storeType);
       setValue("category", data.category);
     },
+    refetchOnWindowFocus: false,
   });
 
   if (isError) {
@@ -60,18 +59,19 @@ export default function StoreEditPage() {
 
   return (
     <form
-      className="px-4 md:max-w-4xl mx-auto py-6"
+      className="px-4 md:max-w-4xl mx-auto py-8"
       onSubmit={handleSubmit(async (data) => {
         try {
-          const result = await axios.post("/api/stores", data);
+          const result = await axios.put("/api/stores", data);
           if (result.status === 200) {
             //성공시
-            toast.success("맛집을 등록했습니다.");
+            toast.success("맛집을 수정했습니다.");
             router.replace(`/stores/${result?.data?.id}`);
           } else {
             toast.error("다시 시도해주세요.");
           }
         } catch (e) {
+          console.log(e);
           toast.error("데이터 생성 중 문제가 발생했습니다. 다시 시도해주세요.");
         }
       })}
@@ -79,10 +79,10 @@ export default function StoreEditPage() {
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
-            맛집 등록
+            맛집 수정
           </h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
-            내용을 입력해서 맛집을 등록해주세요!
+            내용을 입력해서 맛집을 수정해주세요!
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -231,7 +231,7 @@ export default function StoreEditPage() {
           type="submit"
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          제출하기
+          수정하기
         </button>
       </div>
     </form>
