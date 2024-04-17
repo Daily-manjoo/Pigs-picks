@@ -8,6 +8,7 @@ import Map from "@/components/Map";
 import Marker from "@/components/Marker";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function StorePage() {
   const router = useRouter();
@@ -27,6 +28,26 @@ export default function StorePage() {
     enabled: !!id, //useQuery는 id값이 있는 경우에만 사용해야하기 때문
     refetchOnWindowFocus: false,
   });
+
+  const handleDelete = async () => {
+    const confirm = window.confirm("해당 가게를 삭제하시겠습니까?");
+
+    if (confirm && store) {
+      try {
+        const result = await axios.delete(`/api/stores?id=${store?.id}`);
+
+        if (result.status === 200) {
+          toast.success("가게를 삭제했습니다.");
+          router.replace("/");
+        } else {
+          toast.error("다시 시도해주세요.");
+        }
+      } catch (e) {
+        console.log(e);
+        toast.error("다시 시도해주세요.");
+      }
+    }
+  };
 
   if (isError) {
     return (
@@ -52,20 +73,23 @@ export default function StorePage() {
               {store?.address}
             </p>
           </div>
-          <div className="flex gap-4 items-center">
-            <Link
-              className="underline hover:text-gray-500 text-sm"
-              href={`/stores/${store?.id}/edit`}
-            >
-              수정
-            </Link>
-            <button
-              type="button"
-              className="underline hover:text-gray-500 text-sm"
-            >
-              삭제
-            </button>
-          </div>
+          {status === "authenticated" && (
+            <div className="flex gap-4 items-center px-4 py-3">
+              <Link
+                className="underline hover:text-gray-500 text-sm"
+                href={`/stores/${store?.id}/edit`}
+              >
+                수정
+              </Link>
+              <button
+                type="button"
+                className="underline hover:text-gray-500 text-sm"
+                onClick={handleDelete}
+              >
+                삭제
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="mt-6 border-t border-gray-100">
