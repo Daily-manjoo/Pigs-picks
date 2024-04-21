@@ -6,18 +6,18 @@ import {
   AiOutlineCheck,
   AiOutlinePhone,
 } from "react-icons/ai";
-import { HiOutlineMapPin } from "react-icons/hi2";
+import { RiMapPinLine } from "react-icons/ri";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { currentStoreState } from "@/atom";
+import Like from "./Like";
 
-//store에서 x를 눌렀을때 현재값을 없애주기위해 store, setStore 둘 다 받음
 export default function StoreBox() {
   const router = useRouter();
   const [store, setStore] = useRecoilState(currentStoreState);
 
   return (
-    <div className="fixed transition ease-in-out delay-150 inset-x-0 mx-auto bottom-20 rounded-lg shadow-lg max-w-sm md:max-w-wl z-10 w-full bg-white">
+    <div className="fixed transition justify-center ease-in-out delay-150 inset-x-0 mx-auto bottom-12 transform -translate-y-1/2 rounded-lg shadow-lg max-w-sm md:max-w-wl z-10 w-full bg-white">
       {store && (
         <>
           <div className="p-6">
@@ -42,10 +42,15 @@ export default function StoreBox() {
                 <AiOutlineClose />
               </button>
             </div>
-            <div className="mt-2 flex gap-2 items-center text-sm">
-              <HiOutlineMapPin />
-              {store?.address}
+
+            <div className="flex justify-between gap-4">
+              <div className="mt-2 flex gap-2 items-center text-sm col-span-3">
+                <RiMapPinLine />
+                {store?.address || "주소가 없습니다."}
+              </div>
+              <Like />
             </div>
+
             <div className="mt-2 flex gap-2 items-center text-sm">
               <AiOutlinePhone />
               {store?.phone}
