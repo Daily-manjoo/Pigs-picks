@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: 60 * 60 * 24, //세션 최대 수명(초단위 표시, 24시간 유지)
     updateAge: 60 * 60 * 2, //세션 업데이트 주기(초단위 표시, 2시간 유지 )
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as any,
   //Configure one or more authentication providers
   providers: [
     GoogleProvider({
