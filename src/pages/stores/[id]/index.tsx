@@ -9,11 +9,13 @@ import Marker from "@/components/Marker";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import Like from "@/components/Like";
 
 export default function StorePage() {
   const router = useRouter();
   const { id } = router.query;
   const { status } = useSession(); //분기처리(맛집 수정 권한)
+
   const fetchStore = async () => {
     const { data } = await axios(`/api/stores?id=${id}`);
     return data as StoreType;
@@ -73,8 +75,9 @@ export default function StorePage() {
               {store?.address}
             </p>
           </div>
-          {status === "authenticated" && (
+          {status === "authenticated" && store && (
             <div className="flex gap-4 items-center px-4 py-3">
+              {<Like storeId={store.id} />}
               <Link
                 className="underline hover:text-gray-500 text-sm"
                 href={`/stores/${store?.id}/edit`}
