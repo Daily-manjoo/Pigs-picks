@@ -16,10 +16,14 @@ export default function Like({ storeId }: LikeProps) {
     return data as StoreType;
   };
 
-  const { data: store } = useQuery(`like-store-${storeId}`, fetchStore, {
-    enabled: !!storeId, //useQuery는 storeId값이 있는 경우에만 사용해야하기 때문
-    refetchOnWindowFocus: false,
-  });
+  const { data: store, refetch } = useQuery(
+    `like-store-${storeId}`,
+    fetchStore,
+    {
+      enabled: !!storeId, //useQuery는 storeId값이 있는 경우에만 사용해야하기 때문
+      refetchOnWindowFocus: false,
+    }
+  );
   const toggleLike = async () => {
     //찜하기 / 찜취소 로직
     if (session?.user && store) {
@@ -33,6 +37,7 @@ export default function Like({ storeId }: LikeProps) {
         } else {
           toast.warn("찜을 취소했습니다.");
         }
+        refetch();
       } catch (e) {
         console.log(e);
       }

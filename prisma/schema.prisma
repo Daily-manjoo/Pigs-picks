@@ -35,13 +35,12 @@ model Store {
 }
 
 model Like {
-  id              Int @id @default(autoincrement())
-  createdAt        DateTime @default(now()) //현재 날짜와 시간을 기본으로 설정
-  storeId         Int
-  userId          Int
-  //스토어와 유저의 찜 관계
-  store           Store @relation(fields: [storeId], references: [id], onDelete: Cascade) //onDelete: store나 user가 사라지면 찜도 삭제
-  user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  storeId       Int
+  userId        Int
+  store         Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@index([userId, storeId])
 }
 

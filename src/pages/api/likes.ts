@@ -3,10 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
 import prisma from "@/db";
 import { LikeInterface, LikeApiResponse } from "@/interface";
-interface ResponseType {
-  page?: string;
-  limit?: string;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -54,7 +50,7 @@ export default async function handler(
     // GET 요청 처리
     const likes = await prisma.like.findMany({
       where: {
-        userId: session.user.id,
+        userId: session?.user.id,
       },
       include: {
         store: true,
