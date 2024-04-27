@@ -36,7 +36,7 @@ model Store {
 
 model Like {
   id              Int @id @default(autoincrement())
-  createAt        DateTime @default(now()) //현재 날짜와 시간을 기본으로 설정
+  createdAt        DateTime @default(now()) //현재 날짜와 시간을 기본으로 설정
   storeId         Int
   userId          Int
   //스토어와 유저의 찜 관계
