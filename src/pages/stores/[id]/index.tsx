@@ -26,7 +26,7 @@ export default function StorePage() {
     isFetching,
     isSuccess,
     isError,
-  } = useQuery(`store-${id}`, fetchStore, {
+  } = useQuery<StoreType>(`store-${id}`, fetchStore, {
     enabled: !!id, //useQuery는 id값이 있는 경우에만 사용해야하기 때문
     refetchOnWindowFocus: false,
   });
