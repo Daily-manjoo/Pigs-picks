@@ -16,7 +16,7 @@ export default function Like({ storeId }: LikeProps) {
     return data as StoreType;
   };
 
-  const { data: store, refetch } = useQuery(
+  const { data: store, refetch } = useQuery<StoreType>(
     `like-store-${storeId}`,
     fetchStore,
     {

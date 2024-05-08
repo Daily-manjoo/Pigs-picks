@@ -47,10 +47,11 @@ export default async function handler(
       return res.status(201).json(like);
     }
   } else {
-    // GET 요청 처리
+    //get 요청 처리
     const likes = await prisma.like.findMany({
+      orderBy: { createdAt: "desc" }, //최신순 리스트
       where: {
-        userId: session?.user.id,
+        userId: session.user.id,
       },
       include: {
         store: true,
