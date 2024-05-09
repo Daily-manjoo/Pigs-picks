@@ -10,6 +10,7 @@ import Loader from "@/components/Loader";
 import SearchFilter from "@/components/SearchFilter";
 import { searchState } from "@/atom";
 import { useRecoilValue } from "recoil";
+import StoreList from "@/components/StoreList";
 
 export default function StoreListPage() {
   const router = useRouter();
@@ -78,7 +79,7 @@ export default function StoreListPage() {
     <div className="px-4 md:max-w-4xl mx-auto py-8">
       {/* search filter */}
       <SearchFilter />
-      <ul role="list" className="divide-y divide-gray-100">
+      <ul role="list" className="divide-y mt-10 divide-gray-100">
         {isLoading ? (
           <Loading />
         ) : (
@@ -89,41 +90,7 @@ export default function StoreListPage() {
                   store: StoreType,
                   i: number //page라는 배열 안에 store 배열이 더 있으므로 두번 매핑
                 ) => (
-                  <li
-                    className="flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-gray-50"
-                    key={i}
-                    onClick={() => router.push(`stores/${store.id}`)}
-                  >
-                    <div className="flex gap-x-4">
-                      <Image
-                        src={
-                          store?.category
-                            ? `/images/markers/${store?.category}.png`
-                            : "/images/markers/default.png"
-                        }
-                        width={48}
-                        height={48}
-                        alt="아이콘"
-                      />
-                      <div>
-                        <div className="text-sm font-semibold leading-9 text-gray-900">
-                          {store?.name}
-                        </div>
-                        <div className="mt-1 text-xs truncate font-semibold leading-5 text-gray-500">
-                          {store?.name}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="hidden sm:flex sm:flex-col sm:items-end">
-                      <div className="text-sm font-semibold leading-9 text-gray-900">
-                        {store?.address}
-                      </div>
-                      <div className="text-sm font-semibold leading-9 text-gray-900">
-                        {store?.phone || "번호없음"} | {store?.foodCertifyName}{" "}
-                        | {store?.category}
-                      </div>
-                    </div>
-                  </li>
+                  <StoreList store={store} i={i} key={i} />
                 )
               )}
             </React.Fragment>
