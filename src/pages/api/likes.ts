@@ -4,6 +4,11 @@ import { authOptions } from "./auth/[...nextauth]";
 import prisma from "@/db";
 import { LikeInterface, LikeApiResponse } from "@/interface";
 
+interface ResponseType {
+  page?: string;
+  limit?: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<LikeInterface | LikeApiResponse>
@@ -49,6 +54,15 @@ export default async function handler(
       }
     } else {
       // GET 요청 처리
+      const count = await prisma.like.count({
+        where: {
+          userId: session.user.id,
+        },
+      });
+      const { page = "1", limit = "10" }: ResponseType = req.query;
+      const parsedLimit: number = parseInt(limit); // limit를 숫자로 변환
+
+      const skipPage = parseInt(page) - 1; //1페이지는 0으로 시작하기 위해
       const likes = await prisma.like.findMany({
         orderBy: { createdAt: "desc" }, // 최신순 리스트
         where: {
@@ -57,10 +71,14 @@ export default async function handler(
         include: {
           store: true,
         },
+        skip: skipPage * parsedLimit,
+        take: parsedLimit,
       });
 
       return res.status(200).json({
         data: likes,
+        page: parseInt(page),
+        totalPage: Math.ceil(count / parsedLimit),
       });
     }
   } catch (error) {
