@@ -36,10 +36,9 @@
   @apply pt-[52px];
 }
 
-@media only screen and (max-width: 600px){
-
+@media only screen and (max-width: 600px) {
   .navbar--mobile {
-    @apply fixed w-full text-white h-screen top-[52px] bg-pink-200;
+    @apply fixed w-full text-white h-screen top-[52px] z-[100] bg-pink-200;
   }
   .navbar__list {
     @apply hidden;

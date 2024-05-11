@@ -24,6 +24,9 @@ export default function NavBar() {
           <Link href="/users/likes" className="navbar__list--item">
             찜한 가게
           </Link>
+          <Link href="/users/mypage" className="navbar__list--item">
+            마이페이지
+          </Link>
           {status === "authenticated" ? (
             <button type="button" onClick={() => signOut()}>
               로그아웃
@@ -55,6 +58,9 @@ export default function NavBar() {
             </Link>
             <Link href="/users/likes" className="navbar__list--item--mobile">
               찜한 가게
+            </Link>
+            <Link href="/users/mypage" className="navbar__list--item--mobile">
+              마이페이지
             </Link>
             <Link
               href="/api/auth/signin"
