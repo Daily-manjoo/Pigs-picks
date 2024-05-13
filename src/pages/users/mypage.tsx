@@ -1,4 +1,7 @@
+import { useSession } from "next-auth/react";
+
 export default function MyPage() {
+  const { data: session } = useSession();
   return (
     <div className="md:max-w-5xl mx-auto py-8 px-4">
       <div className="px-4 sm:px-0">
@@ -16,7 +19,7 @@ export default function MyPage() {
               이름
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              Margot Foster
+              {session?.user.name ?? "사용자"}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -24,15 +27,21 @@ export default function MyPage() {
               이메일
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              Backend Developer
+              {session?.user.email ?? "사용자"}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">
-              이미지
+              사용자
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              margotfoster@example.com
+              <img
+                alt="프로필"
+                width={48}
+                height={48}
+                className="rounded-full"
+                src={session?.user.image || "/images/markers/default.png"}
+              />
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -40,7 +49,9 @@ export default function MyPage() {
               설정
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              $120,000
+              <button type="button" className="underline hover:text-gray">
+                로그아웃
+              </button>
             </dd>
           </div>
         </dl>
