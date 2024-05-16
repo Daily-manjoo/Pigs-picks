@@ -1,6 +1,5 @@
 import Map from "@/components/Map";
 import Markers from "@/components/Markers";
-import { useState } from "react";
 import StoreBox from "@/components/StoreBox";
 import { StoreType } from "@/interface";
 import axios from "axios";
@@ -15,11 +14,10 @@ export default function Home({ stores }: { stores: StoreType[] }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const stores = await axios(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`);
 
   return {
     props: { stores: stores.data },
-    revalidate: 60 * 60, //1시간마다 업데이트
   };
 }

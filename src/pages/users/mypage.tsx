@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function MyPage() {
   const { data: session } = useSession();
@@ -49,7 +49,11 @@ export default function MyPage() {
               설정
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <button type="button" className="underline hover:text-gray">
+              <button
+                type="button"
+                className="underline hover:text-gray"
+                onClick={() => signOut}
+              >
                 로그아웃
               </button>
             </dd>
