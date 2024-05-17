@@ -48,7 +48,7 @@ export default function Like({ storeId }: LikeProps) {
   return (
     <button type="button" onClick={toggleLike}>
       {/*로그인 된 사용자가 좋아요 눌렀다면 */}
-      {store?.likes?.length ? ( // 찜한 like 데이터는 각 스토어별로 최대 하나씩 있기 때문에 length>0이 아니다.
+      {status === "authenticated" && store?.likes?.length ? ( // 찜한 like 데이터는 각 스토어별로 최대 하나씩 있기 때문에 length>0이 아니다.
         <AiFillHeart className="hover:text-red-600 focus:text-red-600 text-red-500" />
       ) : (
         <AiOutlineHeart className="hover:text-red-600 focus:text-red-600" />
