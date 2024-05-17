@@ -15,16 +15,32 @@ export default function NavBar() {
           pig is picks
         </Link>
         <div className="navbar__list">
-          <Link href="/stores" className="navbar__list--item">
+          <Link
+            href="/stores"
+            className="navbar__list--item"
+            onClick={() => setIsOpen(false)}
+          >
             맛집 목록
           </Link>
-          <Link href="/stores/new" className="navbar__list--item">
+          <Link
+            href="/stores/new"
+            className="navbar__list--item"
+            onClick={() => setIsOpen(false)}
+          >
             맛집 등록
           </Link>
-          <Link href="/users/likes" className="navbar__list--item">
+          <Link
+            href="/users/likes"
+            className="navbar__list--item"
+            onClick={() => setIsOpen(false)}
+          >
             찜한 가게
           </Link>
-          <Link href="/users/mypage" className="navbar__list--item">
+          <Link
+            href="/users/mypage"
+            className="navbar__list--item"
+            onClick={() => setIsOpen(false)}
+          >
             마이페이지
           </Link>
           {status === "authenticated" ? (
@@ -32,7 +48,11 @@ export default function NavBar() {
               로그아웃
             </button>
           ) : (
-            <Link href="/api/auth/signin" className="navbar__list--item">
+            <Link
+              href="/api/auth/signin"
+              className="navbar__list--item"
+              onClick={() => setIsOpen(false)}
+            >
               로그인
             </Link>
           )}
@@ -50,16 +70,32 @@ export default function NavBar() {
       {isOpen && (
         <div className="navbar--mobile">
           <div className="navbar__list--mobile">
-            <Link href="/stores" className="navbar__list--item--mobile">
+            <Link
+              href="/stores"
+              className="navbar__list--item--mobile"
+              onClick={() => setIsOpen(false)}
+            >
               맛집 목록
             </Link>
-            <Link href="/stores/new" className="navbar__list--item--mobile">
+            <Link
+              href="/stores/new"
+              className="navbar__list--item--mobile"
+              onClick={() => setIsOpen(false)}
+            >
               맛집 등록
             </Link>
-            <Link href="/users/likes" className="navbar__list--item--mobile">
+            <Link
+              href="/users/likes"
+              className="navbar__list--item--mobile"
+              onClick={() => setIsOpen(false)}
+            >
               찜한 가게
             </Link>
-            <Link href="/users/mypage" className="navbar__list--item--mobile">
+            <Link
+              href="/users/mypage"
+              className="navbar__list--item--mobile"
+              onClick={() => setIsOpen(false)}
+            >
               마이페이지
             </Link>
             <Link

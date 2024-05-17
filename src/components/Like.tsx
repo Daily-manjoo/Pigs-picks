@@ -10,7 +10,7 @@ interface LikeProps {
 }
 
 export default function Like({ storeId }: LikeProps) {
-  const { data: session } = useSession(); //로그인 된 사용자만 찜할 수 있도록
+  const { data: session, status } = useSession(); //로그인 된 사용자만 찜할 수 있도록
   const fetchStore = async () => {
     const { data } = await axios(`/api/stores?id=${storeId}`);
     return data as StoreType;
@@ -41,6 +41,8 @@ export default function Like({ storeId }: LikeProps) {
       } catch (e) {
         console.log(e);
       }
+    } else if (status === "unauthenticated") {
+      toast.warn("로그인 후 이용해주세요.");
     }
   };
   return (
