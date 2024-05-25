@@ -20,6 +20,17 @@ export default async function handler(
     if (!session?.user) {
       return res.status(401);
     }
+
+    const { storeId, body }: { storeId: number; body: string } = req.body;
+    const comment = await prisma.comment.create({
+      data: {
+        storeId,
+        body,
+        userId: session?.user.id,
+      },
+    });
+
+    return res.status(200).json(comment);
   } else if (req.method === "DELETE") {
     //댓글 삭제 로직
   } else {
