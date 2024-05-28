@@ -21,7 +21,8 @@ export default function CommentForm({ storeId }: CommentFormProps) {
           storeId, //body값은 파라미터로
         });
 
-        if (result.status === 2000) {
+        console.log(result);
+        if (result.status === 200) {
           toast.success("댓글을 등록했습니다.");
           resetField("body"); //바디값 리셋
         } else {
