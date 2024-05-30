@@ -7,7 +7,7 @@ import { CommentInterface, CommentApiResponse } from "@/interface";
 interface ResponseType {
   page?: string;
   limit?: string;
-  storeId: string;
+  storeId?: string;
 }
 
 export default async function handler(
@@ -51,6 +51,9 @@ export default async function handler(
       },
       skip: skipPage * parseInt(limit), //10개를 가져오면 첫 10개를 건너뛰게
       take: parseInt(limit),
+      include: {
+        user: true,
+      },
     });
 
     return res.status(200).json({
