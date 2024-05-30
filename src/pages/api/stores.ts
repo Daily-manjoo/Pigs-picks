@@ -12,6 +12,8 @@ interface ResponseType {
   q?: string;
   district?: string;
   id?: string;
+  user?: boolean;
+  storeId?: string;
 }
 
 export default async function handler(
@@ -108,6 +110,7 @@ export default async function handler(
         include: {
           likes: {
             where: session ? { userId: session.user.id } : {}, //session 로그인이 된 경우 id를 가져오고 아니면 빈 쿼리 보내주기
+            include: { user: true }, //user 정보 포함하도록 명시적 요청
           },
         },
       });

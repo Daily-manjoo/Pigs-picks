@@ -12,6 +12,7 @@ export interface StoreType {
 }
 
 export interface LikeInterface {
+  user: any;
   id: number;
   storeId: number;
   userId: number;
