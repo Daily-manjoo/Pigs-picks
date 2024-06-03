@@ -32,6 +32,7 @@ export interface CommentInterface {
   store?: StoreType;
   body: string;
   user?: UserType;
+  createdAt: string;
 }
 
 interface UserType {
@@ -42,7 +43,7 @@ interface UserType {
 }
 
 export interface CommentApiResponse {
-  data: LikeInterface[];
+  data: CommentInterface[];
   totalPage?: number;
   page?: number;
 }

@@ -34,18 +34,26 @@ export default function Comments({ storeId }: CommentProps) {
           comments?.data?.map((comment) => (
             <div
               key={comment.id}
-              className="space-x-4 flex text-sm text-gray-500"
+              className="space-x-4 flex text-sm mb-8 text-gray-500"
             >
               <div>
                 <img
-                  src={comment?.user?.image || "/images/markers/default.png"}
+                  src={
+                    comment?.user?.image || "/public/images/markers/default.png"
+                  }
                   width={40}
                   height={40}
                   className="rounded-full bg-gray-10"
-                  alt="profile"
+                  alt="profile image"
                 />
               </div>
-              <div></div>
+              <div className="flex-col flex space-y-1">
+                <div>{comment?.user?.email}</div>
+                <div className="text-xs">
+                  {new Date(comment.createdAt)?.toLocaleDateString()}
+                </div>
+                <div className="text-black mt-1 text-base">{comment.body}</div>
+              </div>
               <div></div>
             </div>
           ))
