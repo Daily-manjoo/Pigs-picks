@@ -5,13 +5,14 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { CommentApiResponse } from "@/interface";
+import CommentList from "./CommentList";
 
 interface CommentProps {
   storeId: number;
 }
 
 export default function Comments({ storeId }: CommentProps) {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
   const { page = "1" }: any = router.query;
 
@@ -29,40 +30,7 @@ export default function Comments({ storeId }: CommentProps) {
     <div className="md:max-w-2xl px-2 py-8 mb-20 mx-auto">
       {/*comment form*/}
       {status === "authenticated" && <CommentForm storeId={storeId} />}
-      <div className="my-10">
-        {comments?.data && comments?.data?.length > 0 ? (
-          comments?.data?.map((comment) => (
-            <div
-              key={comment.id}
-              className="space-x-4 flex text-sm mb-8 text-gray-500"
-            >
-              <div>
-                <img
-                  src={
-                    comment?.user?.image || "/public/images/markers/default.png"
-                  }
-                  width={40}
-                  height={40}
-                  className="rounded-full bg-gray-10"
-                  alt="profile image"
-                />
-              </div>
-              <div className="flex-col flex space-y-1">
-                <div>{comment?.user?.email}</div>
-                <div className="text-xs">
-                  {new Date(comment.createdAt)?.toLocaleDateString()}
-                </div>
-                <div className="text-black mt-1 text-base">{comment.body}</div>
-              </div>
-              <div></div>
-            </div>
-          ))
-        ) : (
-          <div className="border border-gray-200 p-4 rounded-md text-sm text-gray-400">
-            댓글이 없습니다.
-          </div>
-        )}
-      </div>
+      <CommentList comments={comments} />
       {/*comment list*/}
     </div>
   );
