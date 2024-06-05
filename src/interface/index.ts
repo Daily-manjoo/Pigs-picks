@@ -32,7 +32,7 @@ export interface CommentInterface {
   store?: StoreType;
   body: string;
   user?: UserType;
-  createdAt: string;
+  createdAt: Date;
 }
 
 interface UserType {
