@@ -24,14 +24,19 @@ export default function Comments({ storeId }: CommentProps) {
     return data as CommentApiResponse;
   };
 
-  const { data: comments } = useQuery(`comments-${storeId}`, fetchComments);
+  const { data: comments, refetch } = useQuery(
+    `comments-${storeId}`,
+    fetchComments
+  );
 
   return (
     <div className="md:max-w-2xl px-2 py-8 mb-20 mx-auto">
       {/*comment form*/}
-      {status === "authenticated" && <CommentForm storeId={storeId} />}
-      <CommentList comments={comments} />
+      {status === "authenticated" && (
+        <CommentForm storeId={storeId} refetch={refetch} />
+      )}
       {/*comment list*/}
+      <CommentList comments={comments} />
     </div>
   );
 }
