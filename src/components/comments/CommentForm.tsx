@@ -25,6 +25,7 @@ export default function CommentForm({ storeId, refetch }: CommentFormProps) {
         if (result.status === 200) {
           toast.success("댓글을 등록했습니다.");
           resetField("body"); //바디값 리셋
+          refetch?.();
         } else {
           toast.error("다시 시도해주세요.");
         }

@@ -42,7 +42,7 @@ export default function CommentList({ comments }: CommentListProps) {
                 }
                 width={40}
                 height={40}
-                className="rounded-full bg-gray-10"
+                className="rounded-full h-10 w-10 bg-gray-10"
                 alt="profile image"
               />
             </div>
