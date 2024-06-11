@@ -74,6 +74,7 @@ export default async function handler(
       take: parseInt(limit),
       include: {
         user: true,
+        store: true, //어떤 가게에 댓글을 달았는지
       },
     });
 

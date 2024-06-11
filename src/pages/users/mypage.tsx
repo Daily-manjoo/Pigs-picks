@@ -89,14 +89,12 @@ export default function MyPage() {
           댓글 리스트
         </p>
       </div>
-      <CommentList comments={comments} />
-      {comments?.totalPage && (
-        <Pagination
-          total={comments?.totalPage}
-          page={page}
-          pathname="/users/mypage"
-        />
-      )}
+      <CommentList comments={comments} displayStore={true} />
+      <Pagination
+        total={comments?.totalPage}
+        page={page}
+        pathname="/users/mypage"
+      />
     </div>
   );
 }

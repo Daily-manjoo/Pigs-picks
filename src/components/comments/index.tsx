@@ -39,13 +39,12 @@ export default function Comments({ storeId }: CommentProps) {
       {/*comment list*/}
       <CommentList comments={comments} />
       {/*pagination*/}
-      {comments?.totalPage && (
-        <Pagination
-          total={comments?.totalPage}
-          page={page}
-          pathname={`/stores/${storeId}`}
-        />
-      )}
+
+      <Pagination
+        total={comments?.totalPage}
+        page={page}
+        pathname={`/stores/${storeId}`}
+      />
     </div>
   );
 }
