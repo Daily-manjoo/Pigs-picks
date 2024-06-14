@@ -11,9 +11,9 @@ export default function NavBar() {
   return (
     <>
       <div className="navbar">
-        <Link className="navbar__logo" href="/">
+        <a className="navbar__logo" href="/">
           pig is picks
-        </Link>
+        </a>
         <div className="navbar__list">
           <Link
             href="/stores"
