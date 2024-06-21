@@ -1,15 +1,14 @@
+"use client";
+
 import Loading from "@/components/Loading";
 import StoreList from "@/components/StoreList";
 import { LikeApiResponse, LikeInterface } from "@/interface";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { useRouter } from "next/router";
 import Pagination from "@/components/Pagination";
 
-export default function LikesPage() {
-  const router = useRouter();
-  const { page = "1" }: any = router.query;
-
+export default function LikesPage({ params }: { params: { page: string } }) {
+  const page = params?.page || "1";
   const fetchLikes = async () => {
     const { data } = await axios(`/api/likes?limit=10&page=${page}`);
     return data as LikeApiResponse;
@@ -19,6 +18,7 @@ export default function LikesPage() {
     data: likes,
     isError,
     isLoading,
+    isSuccess,
   } = useQuery(`likes-${page}`, fetchLikes);
 
   if (isError) {
@@ -41,6 +41,12 @@ export default function LikesPage() {
             <StoreList i={index} store={like.store} key={index} />
           ))
         )}
+        {isSuccess &&
+          !!!likes.data.length && ( //likes.data가 없는 경우
+            <div className="border border-gray-200 p-4 rounded-md text-sm text-gray-400">
+              찜한 가게가 없습니다.
+            </div>
+          )}
       </ul>
       <Pagination
         total={likes?.totalPage}

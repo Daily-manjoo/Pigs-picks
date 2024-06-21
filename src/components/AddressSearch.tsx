@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { StoreType } from "@/interface";
 import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";

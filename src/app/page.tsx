@@ -1,3 +1,5 @@
+"use client";
+
 import CurrentLocationButton from "@/components/CurrentLocationButton";
 import Map from "@/components/Map";
 import Markers from "@/components/Markers";

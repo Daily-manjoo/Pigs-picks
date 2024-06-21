@@ -1,9 +1,9 @@
+"use client";
 import React, { useRef, useEffect, useCallback, useState } from "react";
-import Image from "next/image";
 import { StoreType } from "@/interface";
 import axios from "axios";
 import Loading from "@/components/Loading";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useInfiniteQuery } from "react-query";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
@@ -13,7 +13,6 @@ import { useRecoilValue } from "recoil";
 import StoreList from "@/components/StoreList";
 
 export default function StoreListPage() {
-  const router = useRouter();
   const ref = useRef<HTMLDivElement | null>(null);
   const pageRef = useIntersectionObserver(ref, {});
   const searchValue = useRecoilValue(searchState);
