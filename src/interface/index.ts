@@ -5,14 +5,13 @@ export interface StoreType {
   lat?: string | null;
   lng?: string | null;
   name?: string | null;
-  category: string | null;
+  category?: string | null;
   storeType?: string | null;
   foodCertifyName?: string | null;
   likes?: LikeInterface[];
 }
 
 export interface LikeInterface {
-  user?: any;
   id: number;
   storeId: number;
   userId: number;
@@ -58,7 +57,7 @@ export interface StoreApiResponse {
 export interface LocationType {
   lat?: string | null;
   lng?: string | null;
-  zoom: number;
+  zoom?: number;
 }
 
 export interface SearchType {

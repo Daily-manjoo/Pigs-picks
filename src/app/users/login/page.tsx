@@ -1,62 +1,35 @@
-"use client";
-import { AiOutlineGoogle } from "react-icons/ai";
-import { SiNaver } from "react-icons/si";
-import { RiKakaoTalkFill } from "react-icons/ri";
-import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import Map from "@/components/Map";
+import Markers from "@/components/Markers";
 
-export default function LoginPage() {
-  const { status, data: session } = useSession();
-  const router = useRouter();
+import StoreBox from "@/components/StoreBox";
+import { StoreType } from "@/interface";
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.replace("/");
-    }
-  }, [router, status]);
+import CurrentLocationButton from "@/components/CurrentLocationButton";
 
+export default async function Home() {
+  const stores: StoreType[] = await getData();
   return (
-    <div className="flex flex-col justify-center px-6 lg:px-8 h-[60vh]">
-      <div className="mx-auto w-full max-w-sm">
-        <h1 className="text-center text-2xl font-semibold italic text-pink-400">
-          Pigs map
-        </h1>
-        <div className="text-center mt-6 font-bold text-gray-600 text-xl">
-          SNS 계정으로 로그인해주세요
-        </div>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          계정이 없다면 자동으로 회원가입이 진행됩니다.
-        </p>
-      </div>
-      <div className="mt-10 mx-auto w-full max-w-sm">
-        <div className="flex flex-col gap-4">
-          <button
-            type="button"
-            onClick={() => signIn("google", { callbackUrl: "/" })}
-            className="text-white flex gap-2  bg-[#4285f4] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
-          >
-            <AiOutlineGoogle className="w-6 h-6" />
-            Sign in with Google
-          </button>
-          <button
-            type="button"
-            onClick={() => signIn("naver", { callbackUrl: "/" })}
-            className="text-white flex gap-4  bg-[#2db400] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
-          >
-            <SiNaver className="w-4 h-4" />
-            Sign in with Naver
-          </button>
-          <button
-            type="button"
-            onClick={() => signIn("kakao", { callbackUrl: "/" })}
-            className="text-black flex gap-2  bg-[#fef01b] hover:bg-[#r285f4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
-          >
-            <RiKakaoTalkFill className="w-6 h-6" />
-            Sign in with KaKao
-          </button>
-        </div>
-      </div>
-    </div>
+    <>
+      <Map />
+      <Markers stores={stores} />
+      <StoreBox />
+      <CurrentLocationButton />
+    </>
   );
+}
+
+async function getData() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return res.json();
+  } catch (e) {
+    console.log(e);
+  }
 }

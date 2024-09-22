@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useCallback, useState } from "react";
 import { StoreType } from "@/interface";
 import axios from "axios";
 import Loading from "@/components/Loading";
-import { useRouter } from "next/navigation";
 import { useInfiniteQuery } from "react-query";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Loader from "@/components/Loader";
