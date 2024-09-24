@@ -9,8 +9,12 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
 
-export default function MyPage({ params }: { params: { page: string } }) {
-  const page = params?.page || "1";
+export default function MyPage({
+  searchParams,
+}: {
+  searchParams: { page: string };
+}) {
+  const page = searchParams?.page || "1";
 
   const fetchComments = async () => {
     const { data } = await axios(
