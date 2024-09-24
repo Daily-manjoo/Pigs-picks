@@ -20,6 +20,10 @@ export default async function Home() {
 
 async function getData() {
   try {
+    console.log(
+      "Fetching data from:",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/stores`
+    );
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`, {
       cache: "no-store",
     });
@@ -30,6 +34,6 @@ async function getData() {
 
     return res.json();
   } catch (e) {
-    console.log(e);
+    console.log("Error fetching data:", e);
   }
 }
