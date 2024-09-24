@@ -1,35 +1,62 @@
-import Map from "@/components/Map";
-import Markers from "@/components/Markers";
+"use client";
 
-import StoreBox from "@/components/StoreBox";
-import { StoreType } from "@/interface";
+import { useEffect } from "react";
 
-import CurrentLocationButton from "@/components/CurrentLocationButton";
+import { AiOutlineGoogle } from "react-icons/ai";
+import { SiNaver } from "react-icons/si";
+import { RiKakaoTalkFill } from "react-icons/ri";
 
-export default async function Home() {
-  const stores: StoreType[] = await getData();
-  return (
-    <>
-      <Map />
-      <Markers stores={stores} />
-      <StoreBox />
-      <CurrentLocationButton />
-    </>
-  );
-}
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-async function getData() {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stores`, {
-      cache: "no-store",
-    });
+export default function LoginPage() {
+  const { status, data: session } = useSession();
+  const router = useRouter();
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/");
     }
+  }, [router, status]);
 
-    return res.json();
-  } catch (e) {
-    console.log(e);
-  }
+  return (
+    <div className="flex flex-col justify-center px-6 lg:px-8 h-[60vh]">
+      <div className="mx-auto w-full max-w-sm">
+        <div className="text-center mt-6 text-2xl font-bold text-gray-600">
+          SNS 계정으로 로그인해주세요
+        </div>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          계정이 없다면 자동으로 회원가입이 진행됩니다.
+        </p>
+      </div>
+      <div className="mt-10 mx-auto w-full max-w-sm">
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => signIn("google", { callbackUrl: "/" })}
+            className="text-white flex gap-2 bg-[#4285F4] hover:bg-[#4285F4]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
+          >
+            <AiOutlineGoogle className="w-6 h-6" />
+            Sign in with Google
+          </button>
+          <button
+            type="button"
+            onClick={() => signIn("naver", { callbackUrl: "/" })}
+            className="text-white flex gap-3 bg-[#2db400] hover:bg-[#2db400]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
+          >
+            <SiNaver className="w-4 h-4" />
+            Sign in with Naver
+          </button>
+          <button
+            type="button"
+            onClick={() => signIn("kakao", { callbackUrl: "/" })}
+            className="text-black flex gap-2 bg-[#fef01b] hover:bg-[#fef01b]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
+          >
+            <RiKakaoTalkFill className="w-6 h-6" />
+            Sign in with Kakao
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
