@@ -1,11 +1,26 @@
 import { NextResponse } from "next/server";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextResponse as NextResponseType } from "next/server";
 import { StoreApiResponse, StoreType } from "@/interface";
 import prisma from "@/db";
 import axios from "axios";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*", // 모든 도메인에서 접근 허용 (보안상 위험할 수 있음)
+  // 'Access-Control-Allow-Origin': 'https://your-domain.com', // 특정 도메인만 허용할 때 사용
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+// 공통 CORS 설정 함수
+function setCorsHeaders(response: NextResponseType): NextResponseType {
+  Object.entries(CORS_HEADERS).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
+  return response;
+}
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -17,6 +32,7 @@ export async function GET(req: Request) {
 
   const session = await getServerSession(authOptions);
 
+  let response;
   if (page) {
     const count = await prisma.store.count();
     const skipPage = parseInt(page) - 1;
@@ -30,7 +46,7 @@ export async function GET(req: Request) {
       skip: skipPage * 10,
     });
 
-    return NextResponse.json(
+    response = NextResponse.json(
       {
         page: parseInt(page),
         data: stores,
@@ -54,14 +70,15 @@ export async function GET(req: Request) {
       },
     });
 
-    return NextResponse.json(id ? stores[0] : stores, {
+    response = NextResponse.json(id ? stores[0] : stores, {
       status: 200,
     });
   }
+
+  return setCorsHeaders(response); // CORS 설정 추가
 }
 
 export async function POST(req: Request) {
-  // 데이터 생성을 처리한다
   const formData = await req.json();
   const headers = {
     Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
@@ -78,11 +95,11 @@ export async function POST(req: Request) {
     data: { ...formData, lat: data.documents[0].y, lng: data.documents[0].x },
   });
 
-  return NextResponse.json(result, { status: 200 });
+  const response = NextResponse.json(result, { status: 200 });
+  return setCorsHeaders(response); // CORS 설정 추가
 }
 
 export async function PUT(req: Request) {
-  // 데이터 수정을 처리한다
   const formData = await req.json();
   const headers = {
     Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
@@ -100,16 +117,16 @@ export async function PUT(req: Request) {
     data: { ...formData, lat: data.documents[0].y, lng: data.documents[0].x },
   });
 
-  return NextResponse.json(result, {
+  const response = NextResponse.json(result, {
     status: 200,
   });
+  return setCorsHeaders(response); // CORS 설정 추가
 }
 
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
 
-  // 데이터 삭제
   if (id) {
     const result = await prisma.store.delete({
       where: {
@@ -117,11 +134,20 @@ export async function DELETE(req: Request) {
       },
     });
 
-    return NextResponse.json(result, {
+    const response = NextResponse.json(result, {
       status: 200,
     });
+    return setCorsHeaders(response); // CORS 설정 추가
   }
-  return NextResponse.json(null, {
+
+  const response = NextResponse.json(null, {
     status: 500,
   });
+  return setCorsHeaders(response); // CORS 설정 추가
+}
+
+// OPTIONS 메서드에 대한 처리를 추가하여 CORS preflight 요청을 처리합니다.
+export function OPTIONS() {
+  const response = NextResponse.json({}, { status: 200 });
+  return setCorsHeaders(response);
 }
