@@ -151,5 +151,3 @@ export function OPTIONS() {
   const response = NextResponse.json({}, { status: 200 });
   return setCorsHeaders(response);
 }
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";

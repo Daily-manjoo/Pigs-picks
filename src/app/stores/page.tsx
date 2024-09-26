@@ -23,7 +23,7 @@ export default function StoreListPage() {
   };
 
   const fetchStores = async ({ pageParam = 1 }) => {
-    const { data } = await axios("/api/stores", {
+    const { data } = await axios(`${process.env.DATABASE_URL}/api/stores`, {
       params: {
         limit: 10,
         page: pageParam, // pageParam을 URL에 포함시키지 말고 params에만 넣기
